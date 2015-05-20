@@ -456,7 +456,7 @@ visual_style["vertex_size"] = 5
 visual_style["edge_arrow_size"] = 0.01
 igraph.plot(g2, 'output/model_-0_75_g2.pdf', **visual_style)
 
-# As expected, the first-order network is axactly the same as before
+# As expected, the first-order network is exactly the same as before
 g1 = t_sd.igraphFirstOrder()
 visual_style = {}
 visual_style["edge_width"] = [np.sqrt(x) for x in g1.es()["weight"]]
