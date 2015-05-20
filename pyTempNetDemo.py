@@ -281,6 +281,8 @@ print("Temporal network has", t.ecount(), "time-stamped edges")
 print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
 
 # Here, non-Markovian characteristics are expected to slow down diffusion by a factor of about ... 
+
+# TODO: Returns wrong slow-down factor!
 print("Slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
 # Let us again confirm this empirically ... 
@@ -291,6 +293,7 @@ print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 # Finally, we also find examples for temporal networks in which non-Markovian characteristics 
 # result in a speed-up. For this, we consider a data set of time-stamped passenger flows in the 
 # London Tube networkt = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
+
 t = tn.TemporalNetwork.readFile('data/tube_flows_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
@@ -298,7 +301,7 @@ print("Temporal network has", t.ecount(), "time-stamped edges")
 t.extractTwoPaths()
 g2 = t.igraphSecondOrder().components(mode="STRONG").giant()
 
-# This takes very long ... 
+# TODO: This takes very long ... 
 g2n = t.igraphSecondOrderNull().components(mode="STRONG").giant()
 
 # Here, non-Markovian characteristics result in a speed-up of diffusion expressed by a slow-down factor 
