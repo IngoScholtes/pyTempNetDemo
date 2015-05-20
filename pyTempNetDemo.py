@@ -341,7 +341,7 @@ g1 = t_su.igraphFirstOrder()
 visual_style = {}
 visual_style["edge_width"] = [np.sqrt(x) for x in g1.es()["weight"]]
 visual_style["vertex_color"] = "lightblue"
-visual_style["vertex_size"] = 5
+visual_style["vertex_size"] = 10
 visual_style["edge_arrow_size"] = 0.5
 visual_style["layout"] = g1.layout_auto()
 igraph.plot(g1, 'output/model_0_75_g1.pdf', **visual_style)
@@ -460,6 +460,8 @@ igraph.plot(g2, 'output/model_-0_75_g2.pdf', **visual_style)
 g1 = t_sd.igraphFirstOrder()
 visual_style = {}
 visual_style["edge_width"] = [np.sqrt(x) for x in g1.es()["weight"]]
+visual_style["vertex_color"] = "lightblue"
+visual_style["vertex_size"] = 10
 visual_style["edge_arrow_size"] = 0.5
 visual_style["layout"] = g1.layout_auto()
 igraph.plot(g1, 'output/model_-0_75_g1.pdf', **visual_style)
