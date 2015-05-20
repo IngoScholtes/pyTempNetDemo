@@ -273,7 +273,7 @@ speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="
 print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
 # We next test a temporal network constructed from the Reality Mining data set 
-t = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
+t = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 

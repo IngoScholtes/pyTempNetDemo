@@ -102,3 +102,4 @@ $RECYCLE.BIN/
 *.pdf
 *.tex
 *.synctex
+*.aux
