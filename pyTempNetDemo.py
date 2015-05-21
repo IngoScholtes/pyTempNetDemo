@@ -16,6 +16,8 @@ t1.addEdge('c', 'e', 2)
 t1.addEdge('b', 'c', 3)
 t1.addEdge('c', 'd', 4)
 
+t1.addEdge('x', 'y', 24)
+
 t1.addEdge('b', 'c', 5)
 t1.addEdge('c', 'e', 6)
 
