@@ -119,6 +119,13 @@ visual_style["vertex_label"] = g2.vs["name"]
 visual_style["edge_label"] = g2.es["weight"]
 igraph.plot(g2, 'output/t2_G2.pdf', **visual_style)
 
+g2n = t2.igraphSecondOrderNull()
+
+visual_style["layout"] = g2n.layout_auto()
+visual_style["vertex_label"] = g2n.vs["name"]
+visual_style["edge_label"] = g2n.es["weight"]
+igraph.plot(g2n, 'output/t2_G2_null.pdf', **visual_style)
+
 ##############################################################################
 # We now consider a larger (synthetic) example which we read from a TEDGE file
 # We then demonstrate the spectral analysis of non-Markovian temporal networks
@@ -156,7 +163,7 @@ igraph.plot(g1, 'output/example_g1.pdf', **visual_style)
 # is *densely* connected
 g2n = t.igraphSecondOrderNull()
 visual_style = {}
-visual_style["edge_width"] = [x/10000 for x in g2n.es()["weight"]]
+visual_style["edge_width"] = [x/10.0 for x in g2n.es()["weight"]]
 visual_style["edge_arrow_size"] = 0.01
 visual_style["vertex_color"] = "lightblue"
 visual_style["vertex_size"] = 5
@@ -254,7 +261,25 @@ plt.close()
 
 
 # We now demonstrate the spectral analysis with some actual data. The first data set covers 
-# E-Mail exchanges between  employees in a manufacturing company
+# interactions between ants in an ant colony
+t = tn.TemporalNetwork.readFile('data/ants-1-1_agg_6s_scc.tedges', sep=' ')
+print("Temporal network has", t.vcount(), "nodes")
+print("Temporal network has", t.ecount(), "time-stamped edges")
+
+# The entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
+# characteristics that are likely to change causality
+print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
+
+# Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
+# by a factor of about 2.6 (compared to a Markovian temporal network)
+print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
+
+# We empirically confirm that this prediction is accurate ... 
+speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-4)
+speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-4)
+print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
+
+# The second data set covers E-Mail exchanges between  employees in a manufacturing company
 t = tn.TemporalNetwork.readFile('data/manufacturing_30d_agg_3600_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
@@ -264,25 +289,41 @@ print("Temporal network has", t.ecount(), "time-stamped edges")
 print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
 
 # Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
-# by a factor of about 3.2 (compared to a Markovian temporal network)
+# by a factor of about 4.7 (compared to a Markovian temporal network)
 print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
-# We empirically confirm that this prediction is accurate
+# Again, we empirically confirm that this prediction is accurate ...
 speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
 speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
 print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
-# We next test a temporal network constructed from the Reality Mining data set 
-t = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s.tedges', sep=' ')
+# The third data set coverscontacts between employees in a hospital
+t = tn.TemporalNetwork.readFile('data/Hospital_noADM_agg_300_scc_8_56h.tedges', sep=' ')
+print("Temporal network has", t.vcount(), "nodes")
+print("Temporal network has", t.ecount(), "time-stamped edges")
+
+# Again, the entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
+# characteristics that are likely to change causality
+print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
+
+# Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
+# by a factor of about 6
+print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
+
+# Again, we empirically confirm that this prediction is accurate ...
+speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
+speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
+print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
+
+# We next use the Reality Mining data set, covering proximity interactions between students at MIT
+t = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
 # Again, the temporal sequence deviates from a Markovian temporal network
 print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
 
-# Here, non-Markovian characteristics are expected to slow down diffusion by a factor of about ... 
-
-# TODO: Returns wrong slow-down factor!
+# Here, non-Markovian characteristics are expected to slow down diffusion by a factor of about 6.8 ... 
 print("Slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
 # Let us again confirm this empirically ... 
@@ -292,8 +333,7 @@ print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
 # Finally, we also find examples for temporal networks in which non-Markovian characteristics 
 # result in a speed-up. For this, we consider a data set of time-stamped passenger flows in the 
-# London Tube networkt = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
-
+# London Tube network
 t = tn.TemporalNetwork.readFile('data/tube_flows_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
@@ -313,7 +353,7 @@ print("Slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 ##############################################################################
 # Demonstration using synthetic *trigram* files.
 # Rather than containing time-stamped edges, from which time-respecting paths 
-# are inferred, here we assume a file that directly contains the frequencies 
+# are extracted, here the input is a file that directly contains the frequencies 
 # of time-respecting paths of length two in the format
 # > a,b,c,2
 # which means the time-respecting path a -> b -> c occurred twice
