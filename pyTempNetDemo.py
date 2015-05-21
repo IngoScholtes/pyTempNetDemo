@@ -22,6 +22,8 @@ t1.addEdge('c', 'e', 6)
 t1.addEdge('a', 'c', 7)
 t1.addEdge('c', 'd', 8)
 
+t1.exportMovieFrames('frames/example')
+
 # For illustration purposes, we can output a time-unfolded representation in tikz. 
 # Simply compile the resulting LaTeX file to obtain a PDF figure. 
 t1.exportTikzUnfolded('output/t1.tex')
@@ -61,7 +63,6 @@ visual_style["layout"] = g2.layout_auto()
 visual_style["vertex_label"] = g2.vs["name"]
 visual_style["edge_label"] = g2.es["weight"]
 igraph.plot(g2, 'output/t1_G2.pdf', **visual_style)
-
 
 # Let us now consider a different example in which the statistics of time-respecting paths 
 # *differs* from what we expect based on the time-aggregated network
@@ -119,13 +120,6 @@ visual_style["vertex_label"] = g2.vs["name"]
 visual_style["edge_label"] = g2.es["weight"]
 igraph.plot(g2, 'output/t2_G2.pdf', **visual_style)
 
-g2n = t2.igraphSecondOrderNull()
-
-visual_style["layout"] = g2n.layout_auto()
-visual_style["vertex_label"] = g2n.vs["name"]
-visual_style["edge_label"] = g2n.es["weight"]
-igraph.plot(g2n, 'output/t2_G2_null.pdf', **visual_style)
-
 ##############################################################################
 # We now consider a larger (synthetic) example which we read from a TEDGE file
 # We then demonstrate the spectral analysis of non-Markovian temporal networks
@@ -141,6 +135,9 @@ print("Temporal network has", t.ecount(), "time-stamped edges")
 
 # Let us extract all time-respecting paths of length two
 t.extractTwoPaths()
+
+
+# t.exportMovieFrames('frames/temporal_clusters')
 
 # We can then plot the (first-order) time-aggregated representation
 g1 = t.igraphFirstOrder()
@@ -163,7 +160,6 @@ igraph.plot(g1, 'output/example_g1.pdf', **visual_style)
 # is *densely* connected
 g2n = t.igraphSecondOrderNull()
 visual_style = {}
-visual_style["edge_width"] = [x/10.0 for x in g2n.es()["weight"]]
 visual_style["edge_arrow_size"] = 0.01
 visual_style["vertex_color"] = "lightblue"
 visual_style["vertex_size"] = 5
@@ -174,7 +170,6 @@ igraph.plot(g2n, 'output/example_g2n.pdf', **visual_style)
 # network shows three pronounced *temporal* communities that are not visible in the first-order network
 g2 = t.igraphSecondOrder()
 visual_style = {}
-visual_style["edge_width"] = [x for x in g2.es()["weight"]]
 visual_style["edge_arrow_size"] = 0.01
 visual_style["vertex_color"] = "lightblue"
 visual_style["vertex_size"] = 5
