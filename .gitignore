@@ -53,6 +53,9 @@ docs/_build/
 # PyBuilder
 target/
 
+# output
+frames/
+
 # =========================
 # Operating System Files
 # =========================

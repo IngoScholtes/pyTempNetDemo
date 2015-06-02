@@ -131,7 +131,7 @@ igraph.plot(g2, 'output/t2_G2.pdf', **visual_style)
 # > source, target, time
 # i.e. they are simple (possibly unordered) lists of time-stamped links
 # A header line naming individual columns should be included!
-t = tn.TemporalNetwork.readFile('data/example.tedges', sep=' ')
+t = tn.TemporalNetwork().readFile('data/example.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
@@ -259,7 +259,7 @@ plt.close()
 
 # We now demonstrate the spectral analysis with some actual data. The first data set covers 
 # interactions between ants in an ant colony
-t = tn.TemporalNetwork.readFile('data/ants-1-1_agg_6s_scc.tedges', sep=' ')
+t = tn.TemporalNetwork().readFile('data/ants-1-1_agg_6s_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
@@ -277,7 +277,7 @@ speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="
 print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
 # The second data set covers E-Mail exchanges between  employees in a manufacturing company
-t = tn.TemporalNetwork.readFile('data/manufacturing_30d_agg_3600_scc.tedges', sep=' ')
+t = tn.TemporalNetwork().readFile('data/manufacturing_30d_agg_3600_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
@@ -295,7 +295,7 @@ speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="
 print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
 # The third data set covers contacts between medical personnel in a hospital
-t = tn.TemporalNetwork.readFile('data/Hospital_noADM_agg_300_scc_8_56h.tedges', sep=' ')
+t = tn.TemporalNetwork().readFile('data/Hospital_noADM_agg_300_scc_8_56h.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
@@ -313,7 +313,7 @@ speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="
 print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
 # We next use the Reality Mining data set, covering proximity interactions between students at MIT
-t = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
+t = tn.TemporalNetwork().readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
@@ -331,7 +331,7 @@ print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 # Finally, we also find examples for temporal networks in which non-Markovian characteristics 
 # result in a speed-up. For this, we consider a data set of time-stamped passenger flows in the 
 # London Tube network
-t = tn.TemporalNetwork.readFile('data/tube_flows_scc.tedges', sep=' ')
+t = tn.TemporalNetwork().readFile('data/tube_flows_scc.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
@@ -359,7 +359,7 @@ print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 # slow down and speed up dynamical processes 
 
 # The first file corresponds to a case where non-Markovian properties *speed up* a diffusion process
-t_su = tn.TemporalNetwork.readFile('data/sigma0_75.trigram', fformat='TRIGRAM', sep = ' ')
+t_su = tn.TemporalNetwork().readFile('data/sigma0_75.trigram', fformat='TRIGRAM', sep = ' ')
 
 # Again, the entropy growth rate ratio is smaller than one, verifying that the temporal network 
 # has non-Markovian characteristics
@@ -441,7 +441,7 @@ plt.close()
 
 
 # The second file corresponds to a case where non-Markovian properties *slow down*  a diffusion process
-t_sd = tn.TemporalNetwork.readFile('data/sigma-0_75.trigram', fformat='TRIGRAM', sep = ' ')
+t_sd = tn.TemporalNetwork().readFile('data/sigma-0_75.trigram', fformat='TRIGRAM', sep = ' ')
 
 # Again, the entropy growth rate ratio is smaller than one, verifying that the temporal network 
 # has indeed non-Markovian characteristics
