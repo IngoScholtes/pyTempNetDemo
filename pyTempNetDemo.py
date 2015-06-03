@@ -405,8 +405,18 @@ igraph.plot(g2, 'output/model_0_75_g2.pdf', **visual_style)
 
 # We can calculate algebraic connectivity in the second-order network. A comparison with the algebraic connectivity 
 # of the (expected) Markovian temporal network shows that the temporal network is actually *better connected* than expected
-print("Algebraic Connectivity (G2) =", tn.Measures.AlgebraicConn(t_su))
+print("Algebraic Connectivity (G2 su) =", tn.Measures.AlgebraicConn(t_su))
 print("Algebraic Connectivity (G2 null) =", tn.Measures.AlgebraicConn(t_su, model="NULL"))
+print("Algebraic Connectivity (G2 sd) =", tn.Measures.AlgebraicConn(t_sd))
+
+import scipy.linalg as spl
+T2 = tn.Processes.RWTransitionMatrix(t_su.igraphFirstOrder())
+I = np.diag([1]*len(t_su.igraphFirstOrder().vs()))
+w, v = spl.eig(T2-I, left=True, right=False)
+evals_sorted = np.sort(np.absolute(w))
+x = np.abs(evals_sorted[1])
+
+print("Algebraic Connectivity (G1) =", x)
 
 # Community structures are also visible in the Fiedler vector corresponding to the temporal network
 fiedler = tn.Measures.FiedlerVector(t_su)
