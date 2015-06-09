@@ -16,15 +16,13 @@ t1.addEdge('c', 'e', 2)
 t1.addEdge('b', 'c', 3)
 t1.addEdge('c', 'd', 4)
 
-t1.addEdge('x', 'y', 24)
-
 t1.addEdge('b', 'c', 5)
 t1.addEdge('c', 'e', 6)
 
 t1.addEdge('a', 'c', 7)
 t1.addEdge('c', 'd', 8)
 
-t1.exportMovieFrames('frames/example')
+t1.exportMovie('output/example.mp4')
 
 # For illustration purposes, we can output a time-unfolded representation in tikz. 
 # Simply compile the resulting LaTeX file to obtain a PDF figure. 
@@ -57,6 +55,21 @@ visual_style["layout"] = g1.layout_auto()
 visual_style["vertex_label"] = g1.vs["name"]
 visual_style["edge_label"] = g1.es["weight"]
 igraph.plot(g1, 'output/t1_G1.pdf', **visual_style)
+
+# We can perform a time-slice analysis, aggregating all links in a moving time window
+slices = list(tn.TimeSlices(t1, start=1, window=4, delta=2))
+
+# The return value is an iterator which we can conveniently use to 
+# quantify the evolution of a network
+i = 0
+for slice in slices:
+    print('Time slice '+str(i)+':', len(slice.vs()), 'nodes,', len(slice.es()), 'links')
+    visual_style["edge_label"] = slice.es["weight"]
+    x = igraph.plot(slice, 'output/' +str(i) + '.png', **visual_style)
+    i+=1
+
+# We can export the evolution of time slices as a video
+tn.TimeSlices.ExportVideo(slices, 'output/slice_evolution.mp4', visual_style, delay=50)
 
 # We can also compute and plot the second-order aggregate network 
 # corresponding to the temporal network
