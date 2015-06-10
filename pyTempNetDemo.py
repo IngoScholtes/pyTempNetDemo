@@ -131,7 +131,7 @@ igraph.plot(g2, 'output/t2_G2.pdf', **visual_style)
 # > source, target, time
 # i.e. they are simple (possibly unordered) lists of time-stamped links
 # A header line naming individual columns should be included!
-t = tn.TemporalNetwork().readFile('data/example.tedges', sep=' ')
+t = tn.TemporalNetwork.readFile('data/example.tedges', sep=' ')
 print("Temporal network has", t.vcount(), "nodes")
 print("Temporal network has", t.ecount(), "time-stamped edges")
 
@@ -252,98 +252,98 @@ plt.scatter(range(len(fiedler_null)), np.real(fiedler_null), color="r")
 plt.savefig("output/example_fiedler_null.pdf")
 plt.close()
 
-##############################################################################
-# Demonstration using *real* time-stamped relational data
-##############################################################################
+###############################################################################
+## Demonstration using *real* time-stamped relational data
+###############################################################################
+## NOTE: These data are not publicly available in the repository
 
+## We now demonstrate the spectral analysis with some actual data. The first data set covers 
+## interactions between ants in an ant colony
+#t = tn.TemporalNetwork.readFile('data/ants-1-1_agg_6s_scc.tedges', sep=' ')
+#print("Temporal network has", t.vcount(), "nodes")
+#print("Temporal network has", t.ecount(), "time-stamped edges")
 
-# We now demonstrate the spectral analysis with some actual data. The first data set covers 
-# interactions between ants in an ant colony
-t = tn.TemporalNetwork().readFile('data/ants-1-1_agg_6s_scc.tedges', sep=' ')
-print("Temporal network has", t.vcount(), "nodes")
-print("Temporal network has", t.ecount(), "time-stamped edges")
+## The entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
+## characteristics that are likely to change causality
+#print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
 
-# The entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
-# characteristics that are likely to change causality
-print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
+## Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
+## by a factor of about 2.05 (compared to a Markovian temporal network)
+#print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
-# Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
-# by a factor of about 2.05 (compared to a Markovian temporal network)
-print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
+## We empirically confirm that this prediction is accurate ... 
+#speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-5)
+#speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-5)
+#print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
-# We empirically confirm that this prediction is accurate ... 
-speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-5)
-speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-5)
-print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
+## The second data set covers E-Mail exchanges between  employees in a manufacturing company
+#t = tn.TemporalNetwork.readFile('data/manufacturing_30d_agg_3600_scc.tedges', sep=' ')
+#print("Temporal network has", t.vcount(), "nodes")
+#print("Temporal network has", t.ecount(), "time-stamped edges")
 
-# The second data set covers E-Mail exchanges between  employees in a manufacturing company
-t = tn.TemporalNetwork().readFile('data/manufacturing_30d_agg_3600_scc.tedges', sep=' ')
-print("Temporal network has", t.vcount(), "nodes")
-print("Temporal network has", t.ecount(), "time-stamped edges")
+## The entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
+## characteristics that are likely to change causality
+#print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
 
-# The entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
-# characteristics that are likely to change causality
-print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
+## Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
+## by a factor of about 3.01 (compared to a Markovian temporal network)
+#print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
-# Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
-# by a factor of about 3.01 (compared to a Markovian temporal network)
-print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
+## Again, we empirically confirm that the analytical prediction is correct ...
+#speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-7)
+#speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-7)
+#print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
-# Again, we empirically confirm that the analytical prediction is correct ...
-speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-7)
-speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-7)
-print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
+## The third data set covers contacts between medical personnel in a hospital
+#t = tn.TemporalNetwork.readFile('data/Hospital_noADM_agg_300_scc_8_56h.tedges', sep=' ')
+#print("Temporal network has", t.vcount(), "nodes")
+#print("Temporal network has", t.ecount(), "time-stamped edges")
 
-# The third data set covers contacts between medical personnel in a hospital
-t = tn.TemporalNetwork().readFile('data/Hospital_noADM_agg_300_scc_8_56h.tedges', sep=' ')
-print("Temporal network has", t.vcount(), "nodes")
-print("Temporal network has", t.ecount(), "time-stamped edges")
+## Again, the entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
+## characteristics that are likely to change causality
+#print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
 
-# Again, the entropy growth rate ratio smaller than one confirms that the temporal network exhibits non-Markovian
-# characteristics that are likely to change causality
-print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
+## Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
+## by a factor of about 5.75
+#print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
-# Based on spectral properties, we analytically predict these characteristics to slow down diffusion 
-# by a factor of about 5.75
-print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
+## Again, we empirically confirm that this prediction is accurate ...
+#speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
+#speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
+#print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
-# Again, we empirically confirm that this prediction is accurate ...
-speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
-speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
-print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
+## We next use the Reality Mining data set, covering proximity interactions between students at MIT
+#t = tn.TemporalNetwork.readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
+#print("Temporal network has", t.vcount(), "nodes")
+#print("Temporal network has", t.ecount(), "time-stamped edges")
 
-# We next use the Reality Mining data set, covering proximity interactions between students at MIT
-t = tn.TemporalNetwork().readFile('data/RealityMining_agg_300s_scc.tedges', sep=' ')
-print("Temporal network has", t.vcount(), "nodes")
-print("Temporal network has", t.ecount(), "time-stamped edges")
+## Again, the temporal sequence deviates from a Markovian temporal network
+#print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
 
-# Again, the temporal sequence deviates from a Markovian temporal network
-print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
+## Here, non-Markovian characteristics are expected to slow down diffusion by a factor of about 7.77 ... 
+#print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
-# Here, non-Markovian characteristics are expected to slow down diffusion by a factor of about 7.77 ... 
-print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
+## Let us again confirm this empirically ... 
+#speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
+#speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
+#print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
-# Let us again confirm this empirically ... 
-speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
-speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
-print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
+## Finally, we also find examples for temporal networks in which non-Markovian characteristics 
+## result in a speed-up. For this, we consider a data set of time-stamped passenger flows in the 
+## London Tube network
+#t = tn.TemporalNetwork.readFile('data/tube_flows_scc.tedges', sep=' ')
+#print("Temporal network has", t.vcount(), "nodes")
+#print("Temporal network has", t.ecount(), "time-stamped edges")
 
-# Finally, we also find examples for temporal networks in which non-Markovian characteristics 
-# result in a speed-up. For this, we consider a data set of time-stamped passenger flows in the 
-# London Tube network
-t = tn.TemporalNetwork().readFile('data/tube_flows_scc.tedges', sep=' ')
-print("Temporal network has", t.vcount(), "nodes")
-print("Temporal network has", t.ecount(), "time-stamped edges")
+## Here, non-Markovian characteristics result in a speed-up of diffusion expressed by a slow-down factor 
+## smaller than one
+#print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
+#print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
 
-# Here, non-Markovian characteristics result in a speed-up of diffusion expressed by a slow-down factor 
-# smaller than one
-print("Entropy growth rate ratio is", tn.Measures.EntropyGrowthRateRatio(t))
-print("Analytical slow-down factor for diffusion is", tn.Measures.SlowDownFactor(t))
-
-# And we confirm this empirically ... 
-speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
-speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
-print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
+## And we confirm this empirically ... 
+#speed_g2 = tn.Processes.RWDiffusion(t.igraphSecondOrder().components(mode="strong").giant(), epsilon=1e-6)
+#speed_g2n = tn.Processes.RWDiffusion(t.igraphSecondOrderNull().components(mode="strong").giant(), epsilon=1e-6)
+#print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 
 ##############################################################################
 # Demonstration using synthetic *trigram* files.
@@ -359,7 +359,7 @@ print("Empirical slow-down factor for diffusion is", speed_g2/speed_g2n)
 # slow down and speed up dynamical processes 
 
 # The first file corresponds to a case where non-Markovian properties *speed up* a diffusion process
-t_su = tn.TemporalNetwork().readFile('data/sigma0_75.trigram', fformat='TRIGRAM', sep = ' ')
+t_su = tn.TemporalNetwork.readFile('data/sigma0_75.trigram', fformat='TRIGRAM', sep = ' ')
 
 # Again, the entropy growth rate ratio is smaller than one, verifying that the temporal network 
 # has non-Markovian characteristics
@@ -441,7 +441,7 @@ plt.close()
 
 
 # The second file corresponds to a case where non-Markovian properties *slow down*  a diffusion process
-t_sd = tn.TemporalNetwork().readFile('data/sigma-0_75.trigram', fformat='TRIGRAM', sep = ' ')
+t_sd = tn.TemporalNetwork.readFile('data/sigma-0_75.trigram', fformat='TRIGRAM', sep = ' ')
 
 # Again, the entropy growth rate ratio is smaller than one, verifying that the temporal network 
 # has indeed non-Markovian characteristics
