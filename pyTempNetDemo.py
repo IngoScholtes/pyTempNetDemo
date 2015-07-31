@@ -220,7 +220,7 @@ print("Algebraic Connectivity (G2 null) =", tn.Measures.AlgebraicConn(t, model="
 # in the second-order aggregate network corresponds to a *link* in the underlying temporal network.
 # The distribution of entries in the Fiedler vector shows that links connect nodes in different 
 # (temporal) communities.
-fiedler = tn.Measures.FiedlerVector(t)
+fiedler = tn.Measures.FiedlerVectorDense(t)
 
 # Let us plot the entries in the vector (by index). We observe two *bands* of values that can be used for (recursive) spectral 
 # partitioning
@@ -238,7 +238,7 @@ plt.close()
 
 # The Fiedler vector of the second-order aggregate network corresponding to the null model does not show strong communities, 
 # (as most values are clustered around zero)
-fiedler_null = tn.Measures.FiedlerVector(t, model='NULL')
+fiedler_null = tn.Measures.FiedlerVectorDense(t, model='NULL')
 
 plt.clf()
 plt.tick_params(axis='both', which='major', labelsize=20)
@@ -409,7 +409,7 @@ print("Algebraic Connectivity (G2) =", tn.Measures.AlgebraicConn(t_su))
 print("Algebraic Connectivity (G2 null) =", tn.Measures.AlgebraicConn(t_su, model="NULL"))
 
 # Community structures are also visible in the Fiedler vector corresponding to the temporal network
-fiedler = tn.Measures.FiedlerVector(t_su)
+fiedler = tn.Measures.FiedlerVectorDense(t_su)
 
 plt.clf()
 plt.tick_params(axis='both', which='major', labelsize=20)
@@ -426,7 +426,7 @@ plt.close()
 # second-order network, we see that community structures in the real temporal 
 # network are not as strong as expected, i.e. non-Markovian properties *mitigate* 
 # community structures
-fiedler = tn.Measures.FiedlerVector(t_su, model="NULL")
+fiedler = tn.Measures.FiedlerVectorDense(t_su, model="NULL")
 
 plt.clf()
 plt.tick_params(axis='both', which='major', labelsize=20)
@@ -465,7 +465,7 @@ print("Algebraic Connectivity (G2) =", tn.Measures.AlgebraicConn(t_sd))
 # This can also be seen in the distribution of entries of the Fiedler vector. The two value ranges 
 # are much more separated, which means that community structures are stronger than before
 # Furthermore, they are stronger than in the null model. 
-fiedler = tn.Measures.FiedlerVector(t_sd)
+fiedler = tn.Measures.FiedlerVectorDense(t_sd)
 
 plt.clf()
 plt.tick_params(axis='both', which='major', labelsize=20)
